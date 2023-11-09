@@ -2,8 +2,8 @@
 
     <application
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        android:label="devapp">
+        android:icon="@mipmap/launcher_icon"
+        android:label="DevApp2">
 
         <provider
             android:name="com.ksaucedo.devapp.devapp.SharedPreferencesContentProvider"
