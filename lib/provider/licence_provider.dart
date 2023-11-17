@@ -65,6 +65,7 @@ class ListItemValuesProvider extends ChangeNotifier {
         context,
         message: "the element ${value.name} is already registered",
       );
+      return;
     }
     if (!context.mounted) return;
     final items = [..._values, value];
