@@ -89,7 +89,7 @@ class _LicencesListState extends State<LicencesList> {
               shape: cardShape,
               child: ClipRRect(
                 child: ListTile(
-                  selectedTileColor: Theme.of(context).primaryColor,
+                  selectedTileColor: Theme.of(context).primaryColor.withOpacity(0.8),
                   selectedColor: Colors.white,
                   selected: isSelected,
                   shape: cardShape,

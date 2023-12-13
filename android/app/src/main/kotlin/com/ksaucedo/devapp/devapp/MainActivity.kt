@@ -151,8 +151,10 @@ class MainActivity : MethodChannel.MethodCallHandler, EventChannel.StreamHandler
         val uri = Uri.parse("content://$authority")
         val cr = context.contentResolver
         val bundle: Bundle? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            Log.d(TAG, "CALL WIT AUTORITY");
             cr.call(authority!!, method, arg, extras)
         } else {
+            Log.d(TAG, "CALL WITH URI");
             cr.call(uri, method, arg, extras)
         }
         return bundle

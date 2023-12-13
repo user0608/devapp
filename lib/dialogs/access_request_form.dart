@@ -1,10 +1,25 @@
+import 'dart:math';
+
 import 'package:devapp/models/item_value.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kdialogs/kdialogs.dart';
 
+String generateRandomString() {
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  final random = Random();
+  String result = '';
+
+  for (int i = 0; i < 7; i++) {
+    result += characters[random.nextInt(characters.length)];
+  }
+
+  return result;
+}
+
 Future<ItemValue?> showItemValueFormDialog(BuildContext context, {ItemValue? item}) async {
   final formKey = GlobalKey<FormState>();
+  String id = item?.id ?? generateRandomString();
   String name = item?.name ?? "";
   String description = item?.description ?? "";
   String itemValue = item?.value ?? "";
@@ -19,6 +34,7 @@ Future<ItemValue?> showItemValueFormDialog(BuildContext context, {ItemValue? ite
       if (!isValid) return;
       formKey.currentState?.save();
       context.pop(ItemValue(
+        id: id,
         name: name,
         description: description,
         value: itemValue,
@@ -33,19 +49,19 @@ Future<ItemValue?> showItemValueFormDialog(BuildContext context, {ItemValue? ite
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
+              initialValue: description,
+              autocorrect: false,
+              enableSuggestions: false,
+              decoration: const InputDecoration(label: Text("Description")),
+              onSaved: (value) => description = value?.trim() ?? "",
+            ),
+            TextFormField(
               initialValue: name,
               autocorrect: false,
               enableSuggestions: false,
               decoration: const InputDecoration(label: Text("Identifier")),
               validator: ((value) => value?.trim().isEmpty ?? false ? 'Please enter a name' : null),
               onSaved: (value) => name = value?.trim() ?? "",
-            ),
-            TextFormField(
-              initialValue: description,
-              autocorrect: false,
-              enableSuggestions: false,
-              decoration: const InputDecoration(label: Text("Description")),
-              onSaved: (value) => description = value?.trim() ?? "",
             ),
             TextFormField(
               initialValue: itemValue,

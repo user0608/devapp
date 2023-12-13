@@ -32,7 +32,7 @@ class ListItemValuesProvider extends ChangeNotifier {
     );
     if (!aswer) return;
     bool exist(ItemValue itm) {
-      final index = items.indexWhere((element) => element.name == itm.name);
+      final index = items.indexWhere((element) => element.id == itm.id);
       return index != -1;
     }
 
@@ -43,23 +43,36 @@ class ListItemValuesProvider extends ChangeNotifier {
   }
 
   Future<void> replaceItem(BuildContext context, ItemValue item) async {
+    //
     final items = [..._values];
-    final index = items.indexWhere((element) => element.name == item.name);
+    final index = items.indexWhere((element) => element.id == item.id);
     if (index == -1) return;
     items[index] = item;
-    _replaceValues(context, items);
+    final mapedItems = items.map((e) {
+      if (e.name == item.name && item.state == true && e.id != item.id) {
+        return e.copyWith(state: false);
+      }
+      return e;
+    });
+    _replaceValues(context, mapedItems.toList());
   }
 
   Future<void> updateValue(BuildContext context, ItemValue value) async {
     final items = [..._values];
-    final index = items.indexWhere((element) => element.name == value.name);
+    final index = items.indexWhere((element) => element.id == value.id);
     if (index == -1) return;
     items[index] = value;
-    _replaceValues(context, items);
+    final mapedItems = items.map((e) {
+      if (e.name == value.name && value.state == true && e.id != value.id) {
+        return e.copyWith(state: false);
+      }
+      return e;
+    });
+    _replaceValues(context, mapedItems.toList());
   }
 
   Future<void> saveValue(BuildContext context, ItemValue value) async {
-    final index = values.indexWhere((element) => element.name == value.name);
+    final index = values.indexWhere((element) => element.id == value.id);
     if (index != -1) {
       await showBottomAlertKDialog(
         context,
@@ -105,7 +118,7 @@ class ListItemValuesProvider extends ChangeNotifier {
 
   List<ItemValue> get selecteds => _selectedItems;
   bool isSelected(ItemValue item) {
-    final index = _selectedItems.indexWhere((element) => element.name == item.name);
+    final index = _selectedItems.indexWhere((element) => element.id == item.id);
     return index != -1;
   }
 
@@ -116,7 +129,7 @@ class ListItemValuesProvider extends ChangeNotifier {
   }
 
   void unSelectItem(ItemValue item) {
-    final index = _selectedItems.indexWhere((element) => element.name == item.name);
+    final index = _selectedItems.indexWhere((element) => element.id == item.id);
     if (index == -1) return;
     _selectedItems.removeAt(index);
     notifyListeners();
